@@ -22,19 +22,19 @@ public class AirshipController : MonoBehaviour {
 
     void OutOfScreenBullet()
     {
-        var intList = new List<int>();
+        var intList = new List<GameObject>();
         for (int i = 0; i < usingBullets.Count; i++)
         {
             var v3 = usingBullets[i].transform.localPosition;
             if (v3.x > Screen.width / 2 || v3.x < -Screen.width / 2|| v3.y < -Screen.height|| v3.x > Screen.height)
             {
-                intList.Add(i);
+                intList.Add(usingBullets[i]);
             }
         }
         for (int i = 0; i < intList.Count; i++)
         {
-            var go = usingBullets[intList[i]].GetComponent<Bullet>();
-            Recycle(go);
+            usingBullets.Remove(intList[i]);
+            Recycle(intList[i].GetComponent<Bullet>());
         }
     }
 
@@ -83,23 +83,25 @@ public class AirshipController : MonoBehaviour {
 
     GameObject GetBullet()
     {
-        if (bulletsPool.Count == 0) InstantiateBullet();
         var go = bulletsPool.Dequeue();
         go.IsUsing = true;
         go.gameObject.SetActive(true);
+        usingBullets.Add(go.gameObject);
         return go.gameObject;
     }
 
     void Recycle(Bullet go)
     {
         go.IsUsing = false;
+        usingBullets.Remove(go.gameObject);
         go.gameObject.SetActive(false);
         bulletsPool.Enqueue(go);
+        usingBullets.Remove(go.gameObject);
     }
 
     private void InstantiateBullet()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 20; i++)
         {
             var go = Instantiate(this.bullet);
             go.SetActive(false);
