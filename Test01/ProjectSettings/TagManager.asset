@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackGround
+    uniqueID: 3820829745
+    locked: 0
+  - name: Cloud
+    uniqueID: 2152040365
+    locked: 0
+  - name: WaterFall
+    uniqueID: 338187851
+    locked: 0
